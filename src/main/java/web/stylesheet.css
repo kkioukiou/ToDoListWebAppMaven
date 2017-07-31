@@ -1,0 +1,48 @@
+h2 {
+    text-align: center;
+}
+
+#input-field {
+    width: 100%;
+}
+
+.addButton {
+    width: 23%;
+    background-color: deepskyblue;
+    border: none;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.subLevelList {
+    margin-left: 100px;
+}
+
+.listElement {
+    margin: 5px;
+    padding: 5px;
+    border-left: 6px solid deepskyblue;
+    background-color: lightgrey;
+
+}
+
+#to-do-list .listElement:hover {
+    background-color: darksalmon;
+}
+
+#to-do-list .checkedElement {
+    background-color: darksalmon;
+    text-decoration: line-through;
+    border-left: 6px solid red;
+}
+
+.elementButton {
+    border: none;
+    float: right;
+    background-color: deepskyblue;
+    margin: 2px;
+}
