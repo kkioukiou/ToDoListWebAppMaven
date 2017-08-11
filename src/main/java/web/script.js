@@ -3,7 +3,7 @@ $(document).ready(function (){
     var inputField = $("#input-field");
     var iter = 0;
     var toDoObject;
-    var toDoArray = [];
+//    var toDoArray = [];
 //    var addButton = $("#input-field-add-button");
 //    var subInputFieldAddButton = $('#sub-input-field-add-button');
 //    var subInputField = $('#sub-input-field');
@@ -16,9 +16,8 @@ $(document).ready(function (){
             contentType: 'application/json',
             data: 'getArray',
             success: function(response){
-                toDoArray = response;
-                iter = toDoArray.length;
-                printFullArray(toDoArray);
+                iter = response[response.length - 1].id + 1;
+                printFullArray(response);
             }
         });
     }
@@ -31,18 +30,20 @@ $(document).ready(function (){
             data: JSON.stringify(toDoObject),
             success: function (response) {
                 console.log('data send!');
+                getStartContent();
             }
         });
     }
 
-    function deleteItemFromDataBase(toDoObject) {
+    function deleteItemFromDataBase(id) {
         $.ajax({
             type: 'POST',
             url: '/deleteItem',
             contentType: 'application/json',
-            data: JSON.stringify(toDoObject),
+            data: JSON.stringify({id: id}),
             success: function (response) {
-                console.log('data send!');
+                console.log('delete item!'); //TODO remove
+                getStartContent();
             }
         });
     }
@@ -51,10 +52,8 @@ $(document).ready(function (){
         .change(function(){
             toDoObject = {'id':iter++, 'value':inputField.val()};
             inputField.val('');
-            toDoArray.push(toDoObject);
             sendItemToServer(toDoObject);
             console.log('change work!'); //TODO remove
-            printFullArray(toDoArray);
         });
 
     function printFullArray(array) {
@@ -92,10 +91,10 @@ $(document).ready(function (){
         }
 
         if($target.attr('id') == 'removeElement'){
-            var removeItem = $target.parent().attr('id');
-            console.log('obj   :' + removeItem);
-            toDoArray.splice(removeItem, 1);
-            printFullArray(toDoArray);
+            var removeElement = $target.parents().attr('id');
+            console.log(removeElement);
+            deleteItemFromDataBase(removeElement);
+            getStartContent();
         }
 
         if($target.attr('id') == 'sub-input-field-add-button'){
@@ -114,4 +113,3 @@ $(document).ready(function (){
     }
 
 });
-

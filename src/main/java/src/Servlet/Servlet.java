@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(name = "deleteItem")
+@WebServlet("/deleteItem")
 public class Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         WorkClass workClass = new WorkClass();
+        System.out.println(request);
         workClass.deleteItem(request);
     }
 

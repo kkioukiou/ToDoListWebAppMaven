@@ -43,12 +43,11 @@ public class WorkClass {
     }
 
     public void deleteItem(HttpServletRequest req) throws IOException {
+
         JsonObject obj = new Gson().fromJson(req.getReader(), JsonObject.class);
+        int id = obj.get("id").getAsInt();
+        System.out.println(id);
 
-        ToDoListItem toDoListItem =
-                new ToDoListItem
-                        (obj.get("id").getAsInt(), obj.get("value").getAsString());
-
-        workWithDataBase.deleteItemFromDataBase(toDoListItem);
+        workWithDataBase.deleteItemFromDataBase(id);
     }
 }

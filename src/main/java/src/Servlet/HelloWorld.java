@@ -17,5 +17,17 @@ public class HelloWorld extends HttpServlet {
         WorkClass workClass = new WorkClass();
         workClass.metod(req);
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doGet(req, resp);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doDelete(req, resp);
+    }
+
+
 }
 

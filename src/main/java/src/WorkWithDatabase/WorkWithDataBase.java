@@ -36,7 +36,7 @@ public class WorkWithDataBase {
         }
     }
 
-    public void deleteItemFromDataBase(ToDoListItem toDoListItem){
+    public void deleteItemFromDataBase(int id){
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -47,7 +47,7 @@ public class WorkWithDataBase {
             PreparedStatement ps = con.prepareStatement
                     ("DELETE FROM ToDoListWebApp.items WHERE id=?");
 
-            ps.setInt(1, toDoListItem.getId());
+            ps.setInt(1, id);
 
             int i = ps.executeUpdate();
 
