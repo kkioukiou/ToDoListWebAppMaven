@@ -6,27 +6,33 @@ import java.sql.*;
 
 public class WorkWithDataBase {
 
-    private final String  URL = "jdbc:mysql://localhost:3306/ToDoListWebApp";
+    private final String URL = "jdbc:mysql://localhost:3306/ToDoListWebApp";
     private final String USERNAME = "root";
     private final String USERPASSWORD = "1560";
+
+    public Connection connection(){
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection
+                    (URL, USERNAME, USERPASSWORD);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return con;
+    }
 
     public void insertNewItemToDataBase(ToDoListItem toDoListItem){
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-
-            Connection  con = DriverManager.getConnection
-                    (URL, USERNAME, USERPASSWORD);
-
-            PreparedStatement ps = con.prepareStatement
+            PreparedStatement ps = connection().prepareStatement
                     ("INSERT ToDoListWebApp.items (id, String_item) VALUES (?, ?)");
 
             ps.setInt(1, toDoListItem.getId());
             ps.setString(2, toDoListItem.getValue());
 
             int i = ps.executeUpdate();
-
-            con.close();
 
             if (i > 0){
                 System.out.println("Your insert query is success!");
@@ -39,19 +45,12 @@ public class WorkWithDataBase {
     public void deleteItemFromDataBase(int id){
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-
-            Connection  con = DriverManager.getConnection
-                    (URL, USERNAME, USERPASSWORD);
-
-            PreparedStatement ps = con.prepareStatement
+            PreparedStatement ps = connection().prepareStatement
                     ("DELETE FROM ToDoListWebApp.items WHERE id=?");
 
             ps.setInt(1, id);
 
             int i = ps.executeUpdate();
-
-            con.close();
 
             if (i > 0){
                 System.out.println("Your delete query is success!");
@@ -64,12 +63,7 @@ public class WorkWithDataBase {
     public ResultSet selectAllItemsFromDataBase(){
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-
-            Connection  con = DriverManager.getConnection
-                    (URL, USERNAME, USERPASSWORD);
-
-            Statement statement = con.createStatement();
+            Statement statement = connection().createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM ToDoListWebApp.items;");
 

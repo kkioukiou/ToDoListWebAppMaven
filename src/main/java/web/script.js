@@ -2,7 +2,11 @@ $(document).ready(function (){
     var toDoList = $("#to-do-list");
     var inputField = $("#input-field");
     var iter = 0;
-    var toDoObject;
+
+    var toDoObject = function(id, value){
+        this.id = id;
+        this.value = value;
+    };
 //    var toDoArray = [];
 //    var addButton = $("#input-field-add-button");
 //    var subInputFieldAddButton = $('#sub-input-field-add-button');
@@ -42,7 +46,6 @@ $(document).ready(function (){
             contentType: 'application/json',
             data: JSON.stringify({id: id}),
             success: function (response) {
-                console.log('delete item!'); //TODO remove
                 getStartContent();
             }
         });
@@ -50,10 +53,8 @@ $(document).ready(function (){
 
     inputField
         .change(function(){
-            toDoObject = {'id':iter++, 'value':inputField.val()};
+            sendItemToServer(new toDoObject(iter++, inputField.val()));
             inputField.val('');
-            sendItemToServer(toDoObject);
-            console.log('change work!'); //TODO remove
         });
 
     function printFullArray(array) {
@@ -70,7 +71,7 @@ $(document).ready(function (){
     function printSubInputField(event){
 
         var subInputElement = $('#subInputElement');
-        $target = $(event.target);
+        var $target = $(event.target);
 
         if($('div').is(subInputElement)){
             $('#subInputElement').remove();
@@ -86,30 +87,32 @@ $(document).ready(function (){
     toDoList.click(function checkElement(event){
         var $target = $(event.target);
 
-        if($target.attr('id') == 'listElement'){
-            $target.toggleClass('checkedElement');
-        }
+        switch ($target.attr('id')) {
 
-        if($target.attr('id') == 'removeElement'){
-            var removeElement = $target.parents().attr('id');
-            console.log(removeElement);
-            deleteItemFromDataBase(removeElement);
-            getStartContent();
-        }
+            case 'listElement':
+                $target.toggleClass('checkedElement');
+                break;
 
-        if($target.attr('id') == 'sub-input-field-add-button'){
-            console.log('click');
-            addSubElement();
-        }
+            case 'removeElement':
+                var removeElement = $target.parents().attr('id');
+                console.log(removeElement);
+                deleteItemFromDataBase(removeElement);
+                getStartContent();
+                break;
 
-        if($target.attr('id') == 'addSubElement'){
-            printSubInputField(event);
+            case 'sub-input-field-add-button':
+                console.log('click'); //TODO remove
+                addSubElement();
+                break;
+
+            case 'addSubElement':
+                printSubInputField(event);
+                break;
+
         }
     });
-
 
     function clearOutPrint(){
         $('#to-do-list').empty();
     }
-
 });
