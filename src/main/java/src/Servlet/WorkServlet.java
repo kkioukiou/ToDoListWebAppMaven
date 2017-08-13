@@ -9,23 +9,28 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet("/HelloWorld")
-public class HelloWorld extends HttpServlet {
+@WebServlet("/WorkServlet")
+public class WorkServlet extends HttpServlet {
+
+    private WorkClass workClass;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        WorkClass workClass = new WorkClass();
-        workClass.metod(req);
+        workClass = new WorkClass();
+        workClass.inputSimpleItem(req);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        resp.setContentType("application/json");
+        workClass = new WorkClass();
+        resp.getWriter().write(workClass.getAllItems());
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        workClass = new WorkClass();
+        workClass.deleteSimpleItem(req);
     }
 
 

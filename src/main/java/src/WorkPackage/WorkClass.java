@@ -15,7 +15,7 @@ public class WorkClass {
 
     private WorkWithDataBase workWithDataBase = new WorkWithDataBase();
 
-    public void metod(HttpServletRequest req) throws IOException {
+    public void inputSimpleItem(HttpServletRequest req) throws IOException {
 
         JsonObject obj = new Gson().fromJson(req.getReader(), JsonObject.class);
 
@@ -25,7 +25,7 @@ public class WorkClass {
 
     }
 
-    public String startMethod(){
+    public String getAllItems(){
         List<ToDoListItem> list = new ArrayList<ToDoListItem>();
         ResultSet rs = workWithDataBase.selectAllItemsFromDataBase();
 
@@ -42,7 +42,7 @@ public class WorkClass {
         return json;
     }
 
-    public void deleteItem(HttpServletRequest req) throws IOException {
+    public void deleteSimpleItem(HttpServletRequest req) throws IOException {
 
         JsonObject obj = new Gson().fromJson(req.getReader(), JsonObject.class);
         int id = obj.get("id").getAsInt();

@@ -15,8 +15,8 @@ $(document).ready(function (){
 
     function getStartContent(){
         $.ajax({
-            type: 'POST',
-            url: '/startDataSend',
+            type: 'GET',
+            url: '/WorkServlet',
             contentType: 'application/json',
             data: 'getArray',
             success: function(response){
@@ -29,7 +29,7 @@ $(document).ready(function (){
     function sendItemToServer(toDoObject) {
         $.ajax({
             type: 'POST',
-            url: '/HelloWorld',
+            url: '/WorkServlet',
             contentType: 'application/json',
             data: JSON.stringify(toDoObject),
             success: function (response) {
@@ -41,8 +41,8 @@ $(document).ready(function (){
 
     function deleteItemFromDataBase(id) {
         $.ajax({
-            type: 'POST',
-            url: '/deleteItem',
+            type: 'DELETE',
+            url: '/WorkServlet',
             contentType: 'application/json',
             data: JSON.stringify({id: id}),
             success: function (response) {
@@ -59,8 +59,8 @@ $(document).ready(function (){
 
     function printFullArray(array) {
         clearOutPrint();
-        $.each(array, function(index, object){
-            toDoList.append('<div id="' + object.id + '" class="listElement">' + object.value
+        $.each(array, function(index, toDoObject){
+            toDoList.append('<div id="' + toDoObject.id + '" class="listElement">' + toDoObject.value
             + '<button class="elementButton" id="removeElement">X</button>'
             + '<button class="elementButton" id="addSubElement">add</button>'
             + '</div>');
@@ -97,11 +97,9 @@ $(document).ready(function (){
                 var removeElement = $target.parents().attr('id');
                 console.log(removeElement);
                 deleteItemFromDataBase(removeElement);
-                getStartContent();
                 break;
 
             case 'sub-input-field-add-button':
-                console.log('click'); //TODO remove
                 addSubElement();
                 break;
 
