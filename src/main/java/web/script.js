@@ -1,37 +1,34 @@
 $(document).ready(function (){
     var toDoList = $("#to-do-list");
     var inputField = $("#input-field");
-    var iter = 0;
 
-    var toDoObject = function(id, value){
+    getStartContent();
+
+    function ToDoObject(id, value){
         this.id = id;
         this.value = value;
-    };
+    }
 //    var toDoArray = [];
 //    var addButton = $("#input-field-add-button");
 //    var subInputFieldAddButton = $('#sub-input-field-add-button');
 //    var subInputField = $('#sub-input-field');
-    getStartContent();
 
     function getStartContent(){
         $.ajax({
             type: 'GET',
             url: '/WorkServlet',
-            contentType: 'application/json',
-            data: 'getArray',
             success: function(response){
-                iter = response[response.length - 1].id + 1;
                 printFullArray(response);
             }
         });
     }
 
-    function sendItemToServer(toDoObject) {
+    function sendItemToServer(value) {
         $.ajax({
             type: 'POST',
             url: '/WorkServlet',
             contentType: 'application/json',
-            data: JSON.stringify(toDoObject),
+            data: JSON.stringify(value),
             success: function (response) {
                 console.log('data send!');
                 getStartContent();
@@ -53,7 +50,7 @@ $(document).ready(function (){
 
     inputField
         .change(function(){
-            sendItemToServer(new toDoObject(iter++, inputField.val()));
+            sendItemToServer(inputField.val());
             inputField.val('');
         });
 
@@ -65,7 +62,6 @@ $(document).ready(function (){
             + '<button class="elementButton" id="addSubElement">add</button>'
             + '</div>');
         });
-
     }
 
     function printSubInputField(event){
@@ -82,7 +78,7 @@ $(document).ready(function (){
             '<button id="sub-input-field-add-button">Add</button></div>');
         }
 
-    };
+    }
 
     toDoList.click(function checkElement(event){
         var $target = $(event.target);

@@ -1,4 +1,4 @@
-package src.WorkPackage;
+package src.Models;
 
 /**
  * Created by kkioukiou on 16.07.17.

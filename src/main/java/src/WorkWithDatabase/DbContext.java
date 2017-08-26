@@ -1,10 +1,9 @@
 package src.WorkWithDatabase;
 
-import src.WorkPackage.ToDoListItem;
-
+import src.Models.ToDoListItem;
 import java.sql.*;
 
-public class WorkWithDataBase {
+public class DbContext {
 
     private final String URL = "jdbc:mysql://localhost:3306/ToDoListWebApp";
     private final String USERNAME = "root";
@@ -23,14 +22,14 @@ public class WorkWithDataBase {
         return con;
     }
 
-    public void insertNewItemToDataBase(ToDoListItem toDoListItem){
+    public void insertNewItemToDataBase(String toDoListItem){
 
         try {
             PreparedStatement ps = connection().prepareStatement
-                    ("INSERT ToDoListWebApp.items (id, String_item) VALUES (?, ?)");
+                    ("INSERT ToDoListWebApp.items (String_item) VALUES (?)");
 
-            ps.setInt(1, toDoListItem.getId());
-            ps.setString(2, toDoListItem.getValue());
+//            ps.setInt(1, toDoListItem.getId());
+            ps.setString(1, toDoListItem);
 
             int i = ps.executeUpdate();
 
