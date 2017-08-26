@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import src.Models.ToDoListItem;
-import src.WorkWithDatabase.DbContext;
+import src.DbContext.DbContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,14 +29,14 @@ public class WorkServlet extends HttpServlet {
 
 //        ToDoListItem tdli = new ToDoListItem(obj.get("id").getAsInt(), obj.get("value").getAsString());
 
-        dbContext.insertNewItemToDataBase(jsonPrimitive.getAsString());
+        dbContext.insertNewItem(jsonPrimitive.getAsString());
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         List<ToDoListItem> list = new ArrayList<ToDoListItem>();
-        ResultSet rs = dbContext.selectAllItemsFromDataBase();
+        ResultSet rs = dbContext.selectAllItems();
 
         try {
             while (rs.next()){
@@ -55,7 +55,7 @@ public class WorkServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JsonObject obj = new Gson().fromJson(req.getReader(), JsonObject.class);
         int id = obj.get("id").getAsInt();
-        dbContext.deleteItemFromDataBase(id);
+        dbContext.deleteItem(id);
     }
 
 }

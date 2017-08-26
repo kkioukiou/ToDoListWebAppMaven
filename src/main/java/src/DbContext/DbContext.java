@@ -1,6 +1,5 @@
-package src.WorkWithDatabase;
+package src.DbContext;
 
-import src.Models.ToDoListItem;
 import java.sql.*;
 
 public class DbContext {
@@ -22,7 +21,7 @@ public class DbContext {
         return con;
     }
 
-    public void insertNewItemToDataBase(String toDoListItem){
+    public void insertNewItem(String toDoListItem){
 
         try {
             PreparedStatement ps = connection().prepareStatement
@@ -41,7 +40,7 @@ public class DbContext {
         }
     }
 
-    public void deleteItemFromDataBase(int id){
+    public void deleteItem(int id){
 
         try {
             PreparedStatement ps = connection().prepareStatement
@@ -59,7 +58,7 @@ public class DbContext {
         }
     }
 
-    public ResultSet selectAllItemsFromDataBase(){
+    public ResultSet selectAllItems(){
 
         try {
             Statement statement = connection().createStatement();
