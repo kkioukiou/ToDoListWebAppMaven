@@ -17,8 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/WorkServlet") //api/todo
-public class WorkServlet extends HttpServlet {
+@WebServlet("/Servlet") //api/todo
+public class Servlet extends HttpServlet {
 
     private DbContext dbContext = new DbContext();
 

@@ -84,7 +84,7 @@ function Item(id, text){
 function getItems(){
     $.ajax({
         type: 'GET',
-        url: '/WorkServlet',
+        url: '/Servlet',
         success: function(response){
             printFullArray(response);
         }
@@ -94,7 +94,7 @@ function getItems(){
 function insertItem(value) {
     $.ajax({
         type: 'POST',
-        url: '/WorkServlet',
+        url: '/Servlet',
         contentType: 'application/json',
         data: JSON.stringify(value),
         success: function (response) {
@@ -107,7 +107,7 @@ function insertItem(value) {
 function deleteItem(id) {
     $.ajax({
         type: 'DELETE',
-        url: '/WorkServlet',
+        url: '/Servlet',
         contentType: 'application/json',
         data: JSON.stringify({id: id}),
         success: function (response) {
