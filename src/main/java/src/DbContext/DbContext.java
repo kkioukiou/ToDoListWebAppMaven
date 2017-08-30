@@ -1,6 +1,11 @@
 package src.DbContext;
 
+import com.google.gson.Gson;
+import src.Models.ToDoListItem;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DbContext {
 
@@ -58,14 +63,26 @@ public class DbContext {
         }
     }
 
-    public ResultSet selectAllItems(){
+    public String selectAllItems(){
 
         try {
             Statement statement = connection().createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM ToDoListWebApp.items;");
 
-            return resultSet;
+            List<ToDoListItem> list = new ArrayList<ToDoListItem>();
+
+            try {
+                while (resultSet.next()){
+                    list.add(new ToDoListItem(resultSet.getInt(1), resultSet.getString(2)));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            String json = new Gson().toJson(list);
+
+            return json;
         } catch (Exception e) {
             e.printStackTrace();
         }
