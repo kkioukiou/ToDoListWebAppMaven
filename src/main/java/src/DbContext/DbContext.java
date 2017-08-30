@@ -68,7 +68,7 @@ public class DbContext {
         try {
             Statement statement = connection().createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM ToDoListWebApp.items;");
+            ResultSet resultSet = statement.executeQuery("SELECT id,String_item FROM ToDoListWebApp.items;");
 
             List<ToDoListItem> list = new ArrayList<ToDoListItem>();
 
