@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/Servlet") //api/todo
-public class Servlet extends HttpServlet {
+@WebServlet("/api/todo") //api/todo
+public class Api extends HttpServlet {
 
     private DbContext dbContext = new DbContext();
 
@@ -29,8 +29,9 @@ public class Servlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String json = new Gson().toJson(dbContext.selectAllItems());
         resp.setContentType("application/json");
-        resp.getWriter().write(dbContext.selectAllItems());
+        resp.getWriter().write(json);
     }
 
     @Override
@@ -40,4 +41,12 @@ public class Servlet extends HttpServlet {
         dbContext.deleteItem(id);
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        JsonObject jsonObject = new Gson().fromJson(req.getReader(), JsonObject.class);
+
+        dbContext.checkedItem(jsonObject.get("id").getAsInt(), jsonObject.get("check").getAsBoolean());
+
+    }
 }
