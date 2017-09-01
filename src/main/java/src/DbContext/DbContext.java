@@ -1,8 +1,6 @@
 package src.DbContext;
 
-import com.google.gson.Gson;
 import src.Models.ToDoListItem;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +28,8 @@ public class DbContext {
 
         try {
             PreparedStatement ps = connection().prepareStatement
-                    ("INSERT ToDoListWebApp.items (String_item) VALUES (?)");
+                    ("INSERT ToDoListWebApp.items (itemValue) VALUES (?)");
 
-//            ps.setInt(1, toDoListItem.getId());
             ps.setString(1, toDoListItem);
 
             int i = ps.executeUpdate();
@@ -40,6 +37,8 @@ public class DbContext {
             if (i > 0){
                 System.out.println("Your insert query is success!");
             }
+
+            connection().close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,31 +57,73 @@ public class DbContext {
             if (i > 0){
                 System.out.println("Your delete query is success!");
             }
+
+            connection().close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String selectAllItems(){
+    public List<ToDoListItem> selectAllItems(){
 
         try {
             Statement statement = connection().createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT id,String_item FROM ToDoListWebApp.items;");
+            ResultSet resultSet = statement.executeQuery("SELECT id,itemValue,itemChecked FROM ToDoListWebApp.items;");
 
             List<ToDoListItem> list = new ArrayList<ToDoListItem>();
 
             try {
                 while (resultSet.next()){
-                    list.add(new ToDoListItem(resultSet.getInt(1), resultSet.getString(2)));
+                    list.add(new ToDoListItem(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3)));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            connection().close();
 
-            String json = new Gson().toJson(list);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-            return json;
+    public void checkedItem(int id, boolean check){
+        try {
+            PreparedStatement ps = connection().prepareStatement
+                    ("UPDATE ToDoListWebApp.items SET itemChecked = ? WHERE id = ?;");
+
+            ps.setBoolean(1, check);
+            ps.setInt(2, id);
+
+            int i = ps.executeUpdate();
+
+            if (i > 0){
+                System.out.println("Your update query is success!");
+            }
+
+            connection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ToDoListItem selectItemsById(int id){
+
+        try {
+            Statement statement = connection().createStatement();
+
+            ResultSet resultSet =
+                    statement.executeQuery("SELECT id,itemValue,itemChecked FROM ToDoListWebApp.items WHERE id = " + id + ";");
+            resultSet.next();
+
+            ToDoListItem toDoListItem =
+                    new ToDoListItem(resultSet.getInt(1), resultSet.getString(2), resultSet.getBoolean(3));
+
+            connection().close();
+
+            return toDoListItem;
         } catch (Exception e) {
             e.printStackTrace();
         }

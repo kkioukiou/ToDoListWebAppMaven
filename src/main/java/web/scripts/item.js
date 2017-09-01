@@ -1,6 +1,6 @@
 "use strict";
 
-function Item(id, text){
+function Item(id, text, check){
     var item = this;
 
     this.element = prepareElement();
@@ -10,7 +10,7 @@ function Item(id, text){
         btn.text("X");
         btn.addClass("btn btn-danger")
         btn.click(function(){
-            deleteItem(item.element.attr("id"));
+            toDoRepository.deleteItem(item.element.attr("id"));
             item.element.remove();
         });
         return btn;
@@ -38,17 +38,23 @@ function Item(id, text){
         div.append(createSubList());
         elem.append(div);
         div.addClass("btn-group");
+        if(check){
+            elem.addClass("done");
+        }
         return elem;
     }
 
     function prepareCheckbox(){
         var cb = $("<INPUT>", {type: "checkbox"});
+        cb.prop("checked", check);
         cb.change(function(e){
             console.log(this.checked);
             if(this.checked){
                 item.element.addClass("done");
+                toDoRepository.checkItem(item.element.attr("id"), true);
             } else {
                 item.element.removeClass("done");
+                toDoRepository.checkItem(item.element.attr("id"), false);
             }
         });
         return cb;

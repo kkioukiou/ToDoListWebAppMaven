@@ -7,10 +7,12 @@ public class ToDoListItem {
 
     private int id;
     private String value;
+    private boolean check;
 
-    public ToDoListItem(int id, String value) {
+    public ToDoListItem(int id, String value, boolean check) {
         this.id = id;
         this.value = value;
+        this.check = check;
     }
 
     public int getId() {
@@ -21,8 +23,12 @@ public class ToDoListItem {
         return value;
     }
 
+    public boolean isCheck() {
+        return check;
+    }
+
     @Override
     public String toString() {
-        return this.id + " - " + this.value;
+        return this.id + " - " + this.value + " - " + this.check;
     }
 }
