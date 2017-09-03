@@ -21,9 +21,6 @@ public class Api extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         JsonPrimitive jsonPrimitive = new Gson().fromJson(req.getReader(), JsonPrimitive.class);
-
-//        ToDoListItem tdli = new ToDoListItem(obj.get("id").getAsInt(), obj.get("value").getAsString());
-
         dbContext.insertNewItem(jsonPrimitive.getAsString());
     }
 
