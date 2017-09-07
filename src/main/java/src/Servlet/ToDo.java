@@ -1,49 +1,41 @@
 package src.Servlet;
 
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.JsonAdapter;
-import com.sun.jersey.server.impl.model.parameter.multivalued.MultivaluedParameterExtractor;
-import com.sun.jersey.server.impl.model.parameter.multivalued.MultivaluedParameterExtractorFactory;
-import com.sun.org.glassfish.gmbal.ParameterNames;
-import src.DbContext.DbContext;
+import src.DbContext.DbContextJDBC;
 import src.Models.ToDoItemXml;
 import src.Models.ToDoListItem;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.awt.*;
 import java.util.List;
 
 // The Java class will be hosted at the URI path "/api/todo"
 @Path("/todo")
 public class ToDo {
 
-    DbContext dbContext = new DbContext();
+    DbContextJDBC dbContextJDBC = new DbContextJDBC();
 
-    @Path("/getItems")
+    @Path("/Items")
     @GET
     @Produces("application/json")
     public List<ToDoListItem> getItems() {
-        return dbContext.selectAllItems();
+        return dbContextJDBC.selectAllItems();
     }
 
-    @Path("/insertItem")
+    @Path("/Item")
     @POST
     @Consumes("text/plain")
     public void insertItem(String itemValue){
-        dbContext.insertNewItem(itemValue);
+        dbContextJDBC.insertNewItem(itemValue);
     }
 
-    @Path("/delete/{id}")
+    @Path("/Item/{id}")
     @DELETE
     public void deleteItem(@PathParam("id") int id) {
-        dbContext.deleteItem(id);
+        dbContextJDBC.deleteItem(id);
     }
 
-    @Path("/checkItem")
+    @Path("/Item")
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes("application/json")
     public void checkItem(ToDoItemXml toDoItemXml){
-        System.out.println(toDoItemXml.id + " " + toDoItemXml.check);
-        dbContext.checkedItem(toDoItemXml.id, toDoItemXml.check);
+        dbContextJDBC.checkedItem(toDoItemXml.id, toDoItemXml.check);
     }
 }

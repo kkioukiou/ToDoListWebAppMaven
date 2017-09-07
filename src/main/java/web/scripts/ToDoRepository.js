@@ -5,7 +5,7 @@ function ToDoRepository(){
     this.getItems = function(){
         $.ajax({
             type: 'GET',
-            url: '/api/todo/getItems',
+            url: '/api/todo/Items',
             success: function(response){
                 printFullArray(response);
             }
@@ -15,7 +15,7 @@ function ToDoRepository(){
     this.insertItem = function(value) {
         $.ajax({
             type: 'POST',
-            url: '/api/todo/insertItem',
+            url: '/api/todo/Item',
             contentType: 'text/plain',
             data: value,
             success: function () {
@@ -28,14 +28,14 @@ function ToDoRepository(){
     this.deleteItem = function(id) {
         $.ajax({
             type: 'DELETE',
-            url: '/api/todo/delete/' + id
+            url: '/api/todo/Item/' + id
         });
     };
 
     this.checkItem = function(id, check){
         $.ajax({
             type: 'PUT',
-            url: '/api/todo/checkItem',
+            url: '/api/todo/Item',
             contentType: 'application/json',
             data: JSON.stringify({id: id, check: check}),
             success: function () {

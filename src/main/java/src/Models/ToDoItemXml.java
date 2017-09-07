@@ -8,5 +8,4 @@ public class ToDoItemXml {
     @XmlElement public int id;
     @XmlElement public String value;
     @XmlElement public boolean check;
-
 }
