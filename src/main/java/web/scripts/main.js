@@ -3,7 +3,7 @@
 function printFullArray(array) {
     clearOutPrint();
     $.each(array, function(index, toDoObject){
-        list.addItem(toDoObject.id, toDoObject.value, toDoObject.check);
+        list.addItem(toDoObject.id, toDoObject.itemValue, toDoObject.itemChecked);
     });
 }
 

@@ -1,8 +1,9 @@
 package src.Servlet;
 
-import src.DbContext.DbContextJDBC;
+import src.DbContext.Hibernate.DbContextHibernate;
 import src.Models.ToDoItemXml;
 import src.Models.ToDoListItem;
+
 import javax.ws.rs.*;
 import java.util.List;
 
@@ -10,32 +11,32 @@ import java.util.List;
 @Path("/todo")
 public class ToDo {
 
-    DbContextJDBC dbContextJDBC = new DbContextJDBC();
+    DbContextHibernate dbContextHibernate = new DbContextHibernate();
 
     @Path("/Items")
     @GET
     @Produces("application/json")
     public List<ToDoListItem> getItems() {
-        return dbContextJDBC.selectAllItems();
+        return dbContextHibernate.selectAllItems();
     }
 
     @Path("/Item")
     @POST
     @Consumes("text/plain")
     public void insertItem(String itemValue){
-        dbContextJDBC.insertNewItem(itemValue);
+        dbContextHibernate.insertNewItem(itemValue);
     }
 
     @Path("/Item/{id}")
     @DELETE
     public void deleteItem(@PathParam("id") int id) {
-        dbContextJDBC.deleteItem(id);
+        dbContextHibernate.deleteItem(id);
     }
 
     @Path("/Item")
     @PUT
     @Consumes("application/json")
     public void checkItem(ToDoItemXml toDoItemXml){
-        dbContextJDBC.checkedItem(toDoItemXml.id, toDoItemXml.check);
+        dbContextHibernate.checkedItem(toDoItemXml.id, toDoItemXml.check);
     }
 }
