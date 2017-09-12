@@ -23,7 +23,7 @@ public class ToDoListItem {
     }
 
     @Basic
-    @Column(name = "itemValue", nullable = false, length = 100)
+    @Column(name = "itemValue", length = 100)
     public String getItemValue() {
         return itemValue;
     }

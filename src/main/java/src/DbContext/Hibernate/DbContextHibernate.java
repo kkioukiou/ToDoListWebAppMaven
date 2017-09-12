@@ -2,6 +2,7 @@ package src.DbContext.Hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -41,14 +42,20 @@ public class DbContextHibernate implements DbContext {
         setup();
 
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Transaction tx = null;
 
-        toDoListItem.setItemValue(str);
-        session.save(toDoListItem);
+        try {
+            tx = session.beginTransaction();
 
-        session.getTransaction().commit();
-        session.close();
-
+            toDoListItem.setItemValue(str);
+            session.save(toDoListItem);
+            tx.commit();
+        } catch (Exception e){
+            if (tx != null) tx.rollback();
+//            throw e;
+        } finally {
+            session.close();
+        }
         exit();
     }
 
@@ -59,21 +66,25 @@ public class DbContextHibernate implements DbContext {
         setup();
 
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Transaction tx = null;
 
-//        session.load(toDoListItem, id);
-//        session.delete(toDoListItem);
-
-         toDoListItem.setId(id);
-         session.delete(toDoListItem);
-
-        session.getTransaction().commit();
-        session.close();
+        try {
+            tx = session.beginTransaction();
+            toDoListItem.setId(id);
+            session.delete(toDoListItem);
+            tx.commit();
+        } catch (Exception e){
+            if (tx != null) tx.rollback();
+//            throw e;
+        } finally {
+            session.close();
+        }
 
         exit();
     }
 
     public List<ToDoListItem> selectAllItems() {
+        //How refactor this code to try/catch?
         setup();
 
         Session session = sessionFactory.openSession();
@@ -93,15 +104,20 @@ public class DbContextHibernate implements DbContext {
         setup();
 
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Transaction tx = null;
 
-        session.load(toDoListItem, id);
-        toDoListItem.setItemChecked(check);
-        session.update(toDoListItem);
-
-        session.getTransaction().commit();
-        session.close();
-
+        try {
+            tx = session.beginTransaction();
+            session.load(toDoListItem, id);
+            toDoListItem.setItemChecked(check);
+            session.update(toDoListItem);
+            tx.commit();
+        } catch (Exception e){
+            if (tx != null) tx.rollback();
+//            throw e;
+        } finally {
+            session.close();
+        }
         exit();
     }
 
@@ -112,12 +128,18 @@ public class DbContextHibernate implements DbContext {
         setup();
 
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Transaction tx = null;
 
-        session.load(toDoListItem, id);
-
-        session.getTransaction().commit();
-        session.close();
+        try {
+            tx = session.beginTransaction();
+            session.load(toDoListItem, id);
+            tx.commit();
+        } catch (Exception e){
+            if (tx != null) tx.rollback();
+//            throw e;
+        } finally {
+            session.close();
+        }
 
         exit();
 
